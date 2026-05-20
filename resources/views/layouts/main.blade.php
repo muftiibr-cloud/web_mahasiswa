@@ -48,18 +48,27 @@
     </div>
 </nav>
 
-<div class="container mt-4 mb-5">
+<<div class="container mt-4 mb-5">
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     @endif
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     @yield('content')
 </div>
 
 <footer class="text-center py-3 bg-white border-top">
-    <p class="mb-0">Copyright &copy; 2025 <strong>Politeknik Negeri Padang</strong></p>
+    <p class="mb-0">Copyright &copy; 2026 <strong>Politeknik Negeri Padang</strong></p>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

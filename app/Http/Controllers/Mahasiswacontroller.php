@@ -12,7 +12,7 @@ class MahasiswaController extends Controller
      */
     public function index()
     {
-        $mahasiswas = Mahasiswa::latest()->paginate(10);
+        $mahasiswas = Mahasiswa::latest()->paginate(5);
         return view('mahasiswa.index', compact('mahasiswas'));
     }
 
@@ -28,22 +28,23 @@ class MahasiswaController extends Controller
      * Simpan mahasiswa baru ke database
      */
     public function store(Request $request)
-    {
-        $request->validate([
-            'nama'          => 'required|string|max:100',
-            'nim'           => 'required|string|unique:mahasiswas,nim',
-            'prodi'         => 'required|string|max:100',
-            'email'         => 'required|email|unique:mahasiswas,email',
-            'no_hp'         => 'nullable|string|max:15',
-            'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
-            'angkatan'      => 'required|digits:4|integer|min:2000|max:' . date('Y'),
-        ]);
+{
+    $request->validate([
+        'nim'          => 'required|string|unique:mahasiswas,nim',
+        'nama_lengkap' => 'required|string|max:100',
+        'tempat_lahir' => 'required|string',
+        'tgl_lahir'    => 'required|date',
+        'email'        => 'required|email|unique:mahasiswas,email',
+        'prodi'        => 'required|string',
+        'ipk'          => 'nullable|numeric|min:0|max:4',
+        'alamat'       => 'nullable|string',
+    ]);
 
-        Mahasiswa::create($request->all());
+    Mahasiswa::create($request->all());
 
-        return redirect()->route('mahasiswa.index')
-                         ->with('success', 'Data mahasiswa berhasil ditambahkan!');
-    }
+    return redirect()->route('mahasiswa.index')
+                     ->with('success', 'Data mahasiswa berhasil ditambahkan!');
+}
 
     /**
      * Tampilkan detail mahasiswa
@@ -65,22 +66,23 @@ class MahasiswaController extends Controller
      * Update data mahasiswa
      */
     public function update(Request $request, Mahasiswa $mahasiswa)
-    {
-        $request->validate([
-            'nama'          => 'required|string|max:100',
-            'nim'           => 'required|string|unique:mahasiswas,nim,' . $mahasiswa->id,
-            'prodi'         => 'required|string|max:100',
-            'email'         => 'required|email|unique:mahasiswas,email,' . $mahasiswa->id,
-            'no_hp'         => 'nullable|string|max:15',
-            'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
-            'angkatan'      => 'required|digits:4|integer|min:2000|max:' . date('Y'),
-        ]);
+{
+    $request->validate([
+        'nim'          => 'required|string|unique:mahasiswas,nim,' . $mahasiswa->id,
+        'nama_lengkap' => 'required|string|max:100',
+        'tempat_lahir' => 'required|string',
+        'tgl_lahir'    => 'required|date',
+        'email'        => 'required|email|unique:mahasiswas,email,' . $mahasiswa->id,
+        'prodi'        => 'required|string',
+        'ipk'          => 'nullable|numeric|min:0|max:4',
+        'alamat'       => 'nullable|string',
+    ]);
 
-        $mahasiswa->update($request->all());
+    $mahasiswa->update($request->all());
 
-        return redirect()->route('mahasiswa.index')
-                         ->with('success', 'Data mahasiswa berhasil diperbarui!');
-    }
+    return redirect()->route('mahasiswa.index')
+                     ->with('success', 'Data mahasiswa berhasil diperbarui!');
+}
 
     /**
      * Hapus mahasiswa

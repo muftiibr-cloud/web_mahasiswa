@@ -9,7 +9,7 @@ class DosenController extends Controller
 {
     public function index()
     {
-        $dosens = Dosen::latest()->paginate(10);
+        $dosens = Dosen::latest()->paginate(5);
         return view('akademik.dosen', compact('dosens'));
     }
 
